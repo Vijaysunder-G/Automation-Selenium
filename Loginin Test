@@ -1,0 +1,36 @@
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class AmazonLoginTest extends AmazonBaseTest {
+    
+    @Test
+    public void testInvalidLogin() {
+        AmazonHomePage homePage = new AmazonHomePage(driver);
+        homePage.navigateToSignInPage();
+        
+        AmazonLoginPage loginPage = new AmazonLoginPage(driver);
+        loginPage.enterEmail("invalid@example.com");
+        loginPage.clickContinue();
+        loginPage.enterPassword("wrongpassword");
+        loginPage.clickSignIn();
+        
+        String errorMessage = loginPage.getErrorMessage();
+        Assert.assertTrue(errorMessage.contains("Your password is incorrect"), 
+            "Expected error message for invalid login");
+    }
+    
+    @Test
+    public void testValidLogin() {
+        AmazonHomePage homePage = new AmazonHomePage(driver);
+        homePage.navigateToSignInPage();
+        
+        AmazonLoginPage loginPage = new AmazonLoginPage(driver);
+        loginPage.enterEmail("valid@example.com");
+        loginPage.clickContinue();
+        loginPage.enterPassword("correctpassword");
+        loginPage.clickSignIn();
+        
+        // Verify successful login by checking for account elements
+        Assert.assertTrue(homePage.isUserLoggedIn(), "User should be logged in successfully");
+    }
+}
