@@ -1,0 +1,22 @@
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+public class AmazonProductSearchTest extends AmazonBaseTest {
+    
+    @Test
+    public void testProductSearchAndAddToCart() {
+        AmazonHomePage homePage = new AmazonHomePage(driver);
+        homePage.searchForProduct("Wireless Headphones");
+        
+        AmazonSearchResultsPage resultsPage = new AmazonSearchResultsPage(driver);
+        Assert.assertTrue(resultsPage.areResultsDisplayed(), "Search results should be displayed");
+        
+        String firstProductTitle = resultsPage.getFirstResultTitle();
+        Assert.assertFalse(firstProductTitle.isEmpty(), "Product title should not be empty");
+        
+        resultsPage.addFirstResultToCart();
+        
+        homePage.openCart();
+        // Add cart verification here
+    }
+}
