@@ -1,0 +1,35 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+import java.util.List;
+
+public class AmazonSearchResultsPage {
+    private WebDriver driver;
+    private WebDriverWait wait;
+    
+    // Locators
+    private By searchResults = By.cssSelector("div[data-component-type='s-search-result']");
+    private By firstResultTitle = By.cssSelector("div[data-component-type='s-search-result'] h2 a");
+    private By firstResultAddToCart = By.cssSelector("div[data-component-type='s-search-result'] .a-button-input");
+    
+    public AmazonSearchResultsPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+    }
+    
+    public boolean areResultsDisplayed() {
+        List<WebElement> results = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(searchResults));
+        return !results.isEmpty();
+    }
+    
+    public String getFirstResultTitle() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(firstResultTitle)).getText();
+    }
+    
+    public void addFirstResultToCart() {
+        wait.until(ExpectedConditions.elementToBeClickable(firstResultAddToCart)).click();
+    }
+}
