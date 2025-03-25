@@ -1,0 +1,37 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+
+public class AmazonHomePage {
+    private WebDriver driver;
+    private WebDriverWait wait;
+    
+    // Locators
+    private By searchBox = By.id("twotabsearchtextbox");
+    private By searchButton = By.id("nav-search-submit-button");
+    private By signInLink = By.id("nav-link-accountList");
+    private By cartIcon = By.id("nav-cart");
+    
+    public AmazonHomePage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+    }
+    
+    public void searchForProduct(String productName) {
+        WebElement searchInput = wait.until(ExpectedConditions.elementToBeClickable(searchBox));
+        searchInput.clear();
+        searchInput.sendKeys(productName);
+        driver.findElement(searchButton).click();
+    }
+    
+    public void navigateToSignInPage() {
+        wait.until(ExpectedConditions.elementToBeClickable(signInLink)).click();
+    }
+    
+    public void openCart() {
+        wait.until(ExpectedConditions.elementToBeClickable(cartIcon)).click();
+    }
+}
